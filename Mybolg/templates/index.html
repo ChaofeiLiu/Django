@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="'width=device-width,initial-scale=1.0">
+    <title>首页</title>
+    <link rel="stylesheet" href="/static/swiper.css">
+    <link rel="stylesheet" href="/static/css/bootstrap.css">
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+    <script src="/static/jquery341/jquery-3.4.1.js"></script>
+    <script src="/static/js/bootstrap.js"></script>
+    <script src="/static/swiper.js"></script>
+</head>
+<body style="width: 100%;height: 800px;background-color:wheat;">
+<!--导航-->
+<div style="width: 100%;height: 10px;background-color: black;"></div>
+
+<div style="width: 100%;height: 70px;background-color: aliceblue;display: flex;justify-content: center;align-items: center;">
+    <div style="width: 1000px;height:100%;background-color: aliceblue;margin: 0 auto;display: flex;align-items: center;">
+        <div><img src="/static/img/导航栏LOGO.png" style="width: 80px;height:72px;"></div>
+        <!--分类导航-->
+        <div>
+            <ul style="list-style: none;display: flex;font-weight: bolder">
+                <a href="/index/" target="_blank"><li style="margin-left: 30px;">首页</li></a>
+
+
+                {% for i in all_category %}
+                    <li  style="margin-left: 20px;">
+                        <a href="/show-{{ i.id }}.html" target="_blank">{{i.name}}</a>
+                    </li>
+                {% endfor %}
+
+
+                <a href="{% url 'myself' %}" target="_blank"><li style="margin-left: 20px;">关于博主</li></a>
+            </ul>
+
+       </div>
+    <!--搜索框
+        <div style="display: flex;margin-left: 60px;align-items: center;">
+            <input class="form-control" type="text" style="height: 40px;">
+            <button class="form-control" style="width: 40px;height:40px;border: 1px solid black;margin-left: 10px;display: flex;justify-content: center">
+                <span class="glyphicon glyphicon-search"></span>
+            </button>
+        </div>
+        -->
+        </div>
+
+    <!--注册登录-->
+    <div style="position: absolute;right: 20px;display: flex;flex-direction: row;justify-content: center;align-items: center;">
+        {% if user.is_authenticated %}
+            <p style="margin: 0 auto;">您好，{{ user.username }}.</p>
+            <a href="/logout/" style="margin-left: 20px">退出登录</a>
+        {% else %}
+            <div ><a href="/reg/" target="_blank">注册</a></div>
+            <div style="font-size: 20px;margin-left: 10px;"><a href="/login/">登录</a></div>
+        {% endif %}
+    </div>
+</div>
+<!--上面面板块轮播图-->
+<div style="width: 1000px;height: 445px;background-color: darkseagreen;margin: 0 auto;margin-top: 15px;display: flex;">
+    <!--轮播图-->
+    <div style="width:445px;height:425px;background-color: white;">
+        <div class="swiper-container">
+            <div class="swiper-wrapper">
+                {% for b in bbb %}
+                <div class="swiper-slide"><img style="width: 445px;height: 425px;" src="/media/{{b.img}}"/></div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+<!--博主推荐-->
+    <div style="width: 395px;height:425px;background-color: white;margin-left: 20px">
+        <div style="border: 1px solid red;background-color: red;color: white;padding: 3px;width: 100px;margin: 15px;">博主推荐</div>
+        {% for x in my_tj %}
+            <a href="/my_tuijian-{{x.id}}.html">
+            <div style="margin: 15px;">
+                <div style="font-size: 20px;font-weight: bolder;">{{x.title}}</div>
+                <div style="margin-top: 10px">{{x.about|truncatechars:"80"}}</div>
+            </div>
+            </a>
+        {% endfor %}
+    </div>
+<!--热门推荐-->
+    <div style="width: 300px;height:425px;background-color: white;margin-left: 20px">
+        <div style="border: 1px solid red;background-color: red;color: white;padding: 3px;width: 100px;margin: 15px;">热门推荐排行</div>
+        <div>
+            {% for foo in rm %}
+                <a href="/newest-{{foo.id}}.html" title="{{foo.title}}" target="_blank">
+                    <p style="list-style: decimal;margin-left: 15px;margin-top: 10px;">{{foo.title}}</p>
+                </a>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<div style="width: 1000px;height: 1200px;background-color: darkseagreen;display:flex;margin: 0 auto;">
+        <!--最新文章-->
+    <div style="height: 1150px;width: 865px;background-color: whitesmoke;margin-top: 25px;">
+        <div style="border: 1px solid red;background-color: red;color: white;padding: 3px;width: 100px;margin: 15px;">最新文章</div>
+        <div class="row">
+            {% for n in newest %}
+                <div class="article-box clearfix excerpt-1" style="margin-left:10px; ">
+                    <div class="col-md-4" >
+                        <div class="thumbnail">
+                            <a href="/newest-{{n.id}}.html" title="{{n.title}}" target="_blank">
+                                <img src="/media/{{n.img}}" alt="{{n.title}}"  style="width: 150px;height: 150px">
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <h2>
+                            <a href="/newest-{{n.id}}.html" target="_blank" title="{{n.title}}">
+                                {{n.title}}
+                            </a>
+                        </h2>
+                        <p class="txtcont hidden-xs">
+                            <a href="/newest-{{n.id}}.html" target="_blank" title="{{n.title}}">{{ n.excerpt }}</a>
+                        </p>
+                        <div class="meta">
+                            <time class="item">
+                                <i class="fa fa-clock-o"></i>{{ n.create_time|date:"Y年m月d日"}}
+                            </time>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div style="height: 1100px;width: 300px;margin-left: 20px;background-color:darkseagreen;margin-top: 10px">
+        <!--首页推荐-->
+        <div style="background-color: white;width: 100%;height: 350px;">
+            <div style="border: 1px solid red;background-color: red;color: white;padding: 3px;width: 100px;margin: 15px;">首页推荐</div>
+            <div style="height: 300px;display: flex;flex-wrap: wrap;">
+                <u1 style="height: 300px;display: flex;flex-wrap: wrap;flex-direction: column;">
+                    {% for t in ttt %}
+                        <li style="list-style: none;margin-left: 15px;">
+                            <a href="/newest-{{t.id}}.html" title="{{t.title}}" target="_blank">
+                                <div class="img">
+                                    <img src="/media/{{t.img}}" class="wp-post-image" width="100" height="80"/>
+                                </div>
+                            </a>
+                            <div class="text">
+                                <a href="/newest-{{t.id}}.html" title="{{t.title}}" target="_blank">
+                                    {{t.title}}
+                                </a>
+                            </div>
+                        </li>
+                    {% endfor %}
+                </u1>
+            </div>
+        </div>
+        <!--标签展示-->
+        <div style="background-color: white;width: 100%;height: 200px;margin-top: 20px;">
+            <div style="border: 1px solid red;background-color: red;color: white;padding: 3px;width: 100px;margin: 15px;">所有标签</div>
+            <div style="display: flex;flex-direction: column;flex-wrap: wrap;height: 150px;">
+                {% for t in tag %}
+
+                    <div style="color: black;height: 40px;margin-top: 10px;margin-left:10px;width: 100px;">
+                        <a href="/tag/{{ t.name }}" target="_blank">{{t.name}}</a>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        <!--关于我们-->
+        <div style="background-color: whitesmoke;width: 100%;height: 200px;margin-top: 20px;">
+            <div style="padding: 20px;">
+                <h3 style="margin-top: 10px">About Me</h3>
+                <h5 style="margin-top: 30px">地址:陕西  西安</h5>
+                <h5>联系方式:130-6047-6150</h5>
+                <h5>GitHub:https://github.com/ChaofeiLiu</h5>
+            </div>
+        </div>
+    </div>
+</div>
+<!--版本备案-->
+<div style="height: 100px;width: 1000px;background-color: yellowgreen;margin: 0 auto;display: flex;flex-direction: column;align-items: center">
+    <div style="font-size: 25px;color: white;margin-top: 30px;">Liu.Chaofei的个人网址</div>
+    <!--
+    <div style="font-size: 25px;color: white;margin-top: 30px;">Liu.Chaofei的个人网址</div>
+    <div style="font-size: 25px;color: white;margin-top: 30px;">Liu.Chaofei的个人网址</div>
+    -->
+</div>
+
+
+<script>
+  var mySwiper = new Swiper ('.swiper-container', {
+      autoplay:{
+    delay: 1000,
+    stopOnLastSlide: false,
+    disableOnInteraction: true,
+    },
+    loop: true, // 循环模式选项
+
+    // 如果需要分页器
+    pagination: {
+      el: '.swiper-pagination',
+    },
+
+    // 如果需要前进后退按钮
+    navigation: {
+      nextEl: '.swiper-button-next',
+      prevEl: '.swiper-button-prev',
+    },
+  })
+  </script>
+
+</body>
+</html>

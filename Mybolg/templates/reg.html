@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>注册页</title>
+    <link rel="stylesheet" href="/static/swiper.css">
+    <link rel="stylesheet" href="/static/css/bootstrap.css">
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+
+    <script src="/static/jquery341/jquery-3.4.1.js"></script>
+    <script src="/static/js/bootstrap.js"></script>
+    <script src="/static/swiper.js"></script>
+</head>
+<body>
+<div style="margin-left: 50%;transform: translate(-50%,0);width: 800px;border: 1px solid #22EF46;display: flex;align-items: center">
+<div style="margin-left: 50%;transform: translate(-50%,0);width: 500px;">
+    <form id="myform" method="post" action="/bpb/" >
+        <ul class="form-group" id="regul" style="list-style: none">
+            <li>
+                <label>用户名：</label>
+                <input type="text" name="user_name" id="user_name" class="form-control">
+                <span class="error_trip"></span>
+            </li>
+            <li>
+                <label>密码：</label>
+                <input type="password" name="pwd" id="pwd" class="form-control">
+                <span class="error_trip"></span>
+            </li>
+            <li>
+                <label>确认密码：</label>
+                <input type="password" name="cpwd" id="cpwd" class="form-control">
+                <span class="error_trip"></span>
+            </li>
+            <li>
+                <label>邮箱：</label>
+                <input type="text" name="email" id="email" class="form-control">
+                <span class="error_trip"></span>
+            </li>
+
+            <li>
+                <input type="submit" value="注 册" name="" class="form-control btn-danger">
+            </li>
+        </ul>
+    </form>
+</div>
+</div>
+
+</body>
+</html>

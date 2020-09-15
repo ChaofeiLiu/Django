@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>分类详情页</title>
+    <link rel="stylesheet" href="/static/swiper.css">
+    <link rel="stylesheet" href="/static/css/bootstrap.css">
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+
+    <script src="/static/jquery341/jquery-3.4.1.js"></script>
+    <script src="/static/js/bootstrap.js"></script>
+    <script src="/static/swiper.js"></script>
+</head>
+
+<body>
+
+<div id="main-container" class="container clearfix" style="width: 1180px;margin: 0 auto;">
+    <section class="post-left">
+        <div class="breadcrumb">
+            您的位置:
+            <a itemprop="breadcrumb" href="{% url 'index.html' %}" target="_blank">首页</a>
+            >>>
+            <span class="current">{{ cname }}</span>
+        </div>
+    </section>
+    <div class="index-main clearfix">
+        <div class="main-title">
+            <h4 class="post-left-title">分类：{{ cname }}</h4>
+        </div>
+    </div>
+</div>
+<div>
+    {% for l in list %}
+        <div style="display: flex;margin: 0 auto;width: 1180px;background-color: pink;">
+            <div style="margin-top: 20px;">
+                <a href="/newest-{{l.id}}.html" title="{{ l.title }}" target="_blank">
+                    <img src="/media/{{ l.img }}" class="wp-post-image" width="240" height="160"/>
+                </a>
+            </div>
+            <div style="margin-top: 20px;margin-left: 60px;">
+                <h4>
+                    <a href="/newest-{{l.id}}.html" target="_blank" title="{{ l.title }}">{{ l.title }}</a>
+                </h4>
+                <p class="txtcont hidden-xs">
+                    <a href="/newest-{{l.id}}.html" target="_blank" >{{ l.excerpt }}</a>
+                </p>
+                <div>
+                    <span class="label label-info">
+                        <a class="badge badge-danger" href="/newest-{{l.id}}.html" target="_blank">{{ l.categroy.name }}
+                        </a>
+                    </span>
+                    <time class="item">
+                        <i class="fa fa-clock-o">
+                            {{ l.create_time|date:"Y年m月d日" }}
+                        </i>
+                    </time>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+<!--分页-->
+<div style="margin: 0 auto;width: 1180px;display: flex;justify-content: center;">
+    <ul class="pagination" >
+        {% if list.has_previous %}
+            <li class="prev-page"><a href="?page={{ list.previous_page_number }}" >上一页</a></li>
+        {% else %}
+            <li class="prev-page"></li>
+        {% endif %}
+            {% for num in list.paginator.page_range %}
+                {% if num %}
+                    {% ifequal num list.number %}
+                        <li class="active"><span>{{ num }}</span></li>
+                    {% else %}
+                        <li><a href="?page={{ num}}" >{{ num }}</a></li>
+                    {% endifequal %}
+                {% else %}
+                    <li class="disabled"><span></span></li>
+                {% endif %}
+            {% endfor %}
+                {% if list.has_next %}
+                    <li class="next-page"><a href="?page={{ list.next_page_number }}" >下一页</a></li>
+                {% else %}
+                    <li class="prev-page"></li>
+                {% endif %}
+    </ul>
+</div>
+
+
+
+</body>
+</html>
